@@ -10,24 +10,38 @@ export enum ChatMessageOwner {
   ASSISTANT = 'assistant',
 }
 
+export enum ChatMessageContentType {
+  FILE = 'file',
+  TEXT = 'text',
+  IMAGE = 'image',
+}
+
 export type RatingType = 'like' | 'dislike';
 
 export type MessageFeedbackTagType = { id: IdType, label: string, value: string | number };
 
+export type FileContent = { 
+  type: ChatMessageContentType.FILE, 
+  url?: string,
+  base64?: string,
+};
+
 export type ImageContent = {
-  type: 'image_url',
-  image_url: { url: string }
+  type: ChatMessageContentType.IMAGE,
+  url?: string,
+  base64?: string,
 }
 
 export type TextContent = {
-  type: 'text',
+  type: ChatMessageContentType.TEXT,
   text: string,
 }
 
+export type Attachment = ImageContent | FileContent;
 // TODO: Should be "external", because it's a type of message that we return to the user in their format
 export type InternalMessageType = any;
 
-export type MessageUserContent = string | (ImageContent | TextContent)[];
+export type MessageUserContent = string | (Attachment | TextContent)[];
 export type MessageAssistantContent = string | (TextContent)[];
 
 export type Message = {
@@ -56,7 +70,7 @@ export class MessageModel<DM extends Message = Message> {
 
   readonly reasoningManager = new MessageReasoningModel();
 
-  images?: string[];
+  attachments: Attachment[] = [];
 
   /**
    * An observable flag indicating the start/finish of message typing.
@@ -73,8 +87,7 @@ export class MessageModel<DM extends Message = Message> {
       this.texts.value = (content.filter(v => v.type === 'text') as TextContent[]).map(
         (text) => new MessageText(text.text)
       );
-
-      this.images = (content.filter(v => v.type === 'image_url') as ImageContent[])?.map((img) => img.image_url.url || '');
+      this.attachments = content.filter(v => v.type !== ChatMessageContentType.TEXT);
     }
 
     if (_data.reasoning) {
@@ -132,12 +145,19 @@ export class MessageModel<DM extends Message = Message> {
     return this.role === ChatMessageOwner.ASSISTANT;
   }
 
+  get images() {
+    return this.attachments.filter((a) => a.type === ChatMessageContentType.IMAGE);
+  }
+
+  get files() {
+    return this.attachments.filter((a) => a.type === ChatMessageContentType.FILE);
+  }
+
   get content() {
     let data: Message['content'] = this.text;
 
-    if (this.images?.length) {
-      const imgContent: ImageContent[] = this.images.map((img) => ({ type: 'image_url', image_url: { url: img } }));
-      data = [...imgContent, { type: 'text', text: this.text }] ;
+    if (this.attachments?.length) {
+      data = [ { type: ChatMessageContentType.TEXT, text: this.text }, ...this.attachments];
     }
 
     return data;

@@ -4,14 +4,12 @@ import { useChatSlots } from '../core/ChatSlotsContext';
 import { useChatContext } from '../core/ChatGlobalContext';
 
 type Props = {
-  isTyping: boolean | undefined;
-  text: string;
-  images: string[];
   onSendMessage: () => void;
+  isTyping?: boolean;
+  disabled?: boolean;
 };
 
-const SendMessageButton: React.FC<Props> = ({ text, images, onSendMessage, isTyping }) => {
-  const disabled = !isTyping && !text && !images.length;
+const SendMessageButton: React.FC<Props> = ({ onSendMessage, isTyping, disabled }) => {
   const { slots, slotProps } = useChatSlots();
   const { handleStopMessageStreaming } = useChatContext();
 

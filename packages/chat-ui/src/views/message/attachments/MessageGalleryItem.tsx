@@ -1,7 +1,6 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 
 type Props = {
   item: HTMLImageElement;
@@ -12,9 +11,9 @@ type Props = {
   index: number;
 };
 
-const GridItem = styled(Box)(() => ({
+const GridItem = styled(Box)(({ theme }) => ({
   width: '100%',
-  backgroundColor: materialDesignSysPalette.surfaceContainerLow,
+  backgroundColor: theme.palette.common.white,
   position: 'relative',
   borderRadius: '8px',
   '& a': {
@@ -33,7 +32,7 @@ const GridItem = styled(Box)(() => ({
   },
 }));
 
-const ChatMessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, index }: Props) => {
+const MessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, index }: Props) => {
   const { src, width, height } = item;
 
   const getItemsInRow = (row: number) => {
@@ -100,4 +99,4 @@ const ChatMessageGalleryItem = ({ item, galleryId, columns, rows, itemsCount, in
   );
 }
 
-export default ChatMessageGalleryItem;
+export default MessageGalleryItem;

@@ -1,6 +1,5 @@
 import * as React from 'react';
-// import TestApp from './test/common/BaseExample';
-import TestApp from './views/Sandbox';
+import TestApp from './test/common/BaseExample';
 import eruda from 'eruda';
 
 const App: React.FC = () => {

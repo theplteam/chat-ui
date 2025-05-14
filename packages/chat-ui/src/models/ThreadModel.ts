@@ -29,6 +29,8 @@ export class ThreadModel<DM extends Message = any, DD extends Thread<DM> = any> 
 
   readonly isTyping = new ObservableReactValue(false);
 
+  readonly isLoadingAttachments = new ObservableReactValue<number[]>([]);
+
   readonly isEmpty = new ObservableReactValue(false);
 
   readonly streamStatus = new ObservableReactValue<StreamResponseState | undefined | string>(undefined);

@@ -30,8 +30,8 @@ const ChatGlobalProviderComponent = ({ props, children, apiManager }: ProviderPr
     props.threads,
     props.thread,
     props.onUserMessageSent,
-  // Model is not needed while data for the chat is loading
-  // therefore it needs to be recreated, since changes may occur during loading
+    // Model is not needed while data for the chat is loading
+    // therefore it needs to be recreated, since changes may occur during loading
   ), [props.loading]);
 
   useApiRefInitialization(

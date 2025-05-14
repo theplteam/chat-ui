@@ -146,17 +146,17 @@ export const useThreadSendMessage = (
 
     return new Promise<{ message: InternalMessageType }>((resolve, reject) => {
       const streamParams = messageSender.getUserParams(resolve, getInternalMessage);
-        const res = thread.streamMessage(messageSender.getUserParams(resolve, getInternalMessage));
+      const res = thread.streamMessage(messageSender.getUserParams(resolve, getInternalMessage));
 
-        if (res instanceof Promise) {
-          res
-            .then(streamParams.onFinish)
-            .catch((reason) => {
-              messageSender.changeTypingStatus(false);
-              thread.isTyping.value = false;
-              reject(reason);
-            });
-        }
+      if (res instanceof Promise) {
+        res
+          .then(streamParams.onFinish)
+          .catch((reason) => {
+            messageSender.changeTypingStatus(false);
+            thread.isTyping.value = false;
+            reject(reason);
+          });
+      }
     });
   };
 
@@ -168,7 +168,7 @@ export const useThreadSendMessage = (
       text = content;
     } else if (Array.isArray(content)) {
       text = (content.filter(v => v.type === 'text') as TextContent[])?.[0]?.text ?? '';
-      images = content.map(v => v.type === 'image_url' ? v.image_url.url : undefined).filter(v => !!v) as string[];
+      images = content.map(v => v.type === 'image' ? v.url : undefined).filter(v => !!v) as string[];
     }
 
     return new Promise<boolean>(async (resolve) => {

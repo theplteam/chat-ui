@@ -15,13 +15,14 @@ import { ThreadModel } from '../../models/ThreadModel';
 import { useObserverValue } from '../hooks/useObserverValue';
 import { materialDesignSysPalette } from '../../utils/materialDesign/palette';
 import { useChatContext } from '../core/ChatGlobalContext';
-import ChatMessageGallery from './ChatMessageGallery';
 import { useChatSlots } from '../core/ChatSlotsContext';
 import { motion } from '../../utils/materialDesign/motion';
 import { useElementRefState } from '../hooks/useElementRef';
 import useHover from '../hooks/useHover';
 import { useTablet } from '../../ui/Responsive';
 import clsx from 'clsx';
+import MessageGallery from './attachments/MessageGallery';
+import MessageFiles from './attachments/MessageFiles';
 
 type Props = {
   message: MessageModel;
@@ -76,7 +77,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
     const newMessage = await apiRef.current?.onEditMessage(newText, message);
     if (newMessage) {
       apiRef.current?.handleChangeBranch(newMessage);
-      onAssistantMessageTypingFinish?.({message: message.data, thread: thread.data.data});
+      onAssistantMessageTypingFinish?.({ message: message.data, thread: thread.data.data });
     }
   }
 
@@ -84,11 +85,16 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
     messageMode.view(message.id);
   }
 
-  const imageComponent = message.images?.length
+  const imageComponent = message.images.length
     ? (
-      <ChatMessageGallery
+      <MessageGallery
         images={message.images} id={message.id}
       />
+    ) : null;
+
+  const fileComponent = message.files.length
+    ? (
+      <MessageFiles files={message.files} />
     ) : null;
 
   const children = React.useMemo(() => (
@@ -111,6 +117,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
   if (mode === MessageStateEnum.EDIT) {
     return (
       <Stack width="100%" gap={1} alignItems="flex-end">
+        {fileComponent}
         {imageComponent}
         <MessageUserEditor
           text={message.text}
@@ -136,6 +143,7 @@ const ChatMessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation 
         flexDirection="column"
         gap={1}
       >
+        {fileComponent}
         {imageComponent}
         {message.text ? (
           <ChatMessageContainerStyled
