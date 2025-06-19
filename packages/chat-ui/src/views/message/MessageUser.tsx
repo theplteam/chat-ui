@@ -142,7 +142,7 @@ const MessageUser: React.FC<Props> = ({ message, thread, isFirst, elevation }) =
         <MessageContainer
           className={chatClassNames.messageUser}
           elevation={elevation}
-          sx={{ width: '100%', backgroundColor: (theme) => theme.palette.grey[200] }}
+          sx={{ maxWidth: '100%', backgroundColor: (theme) => theme.palette.grey[200] }}
         >
           <MessageMarkdownBlock
             text={message.text}

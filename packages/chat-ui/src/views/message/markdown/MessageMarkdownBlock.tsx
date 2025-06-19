@@ -14,7 +14,7 @@ type Props = {
   inProgress: boolean;
 };
 
-export const ChatMarkdownBlockRoot = styled(Box)(({theme}) => ({
+export const ChatMarkdownBlockRoot = styled(Box)(({ theme }) => ({
   ...theme.typography.body2,
   width: '100%',
   wordWrap: 'break-word',

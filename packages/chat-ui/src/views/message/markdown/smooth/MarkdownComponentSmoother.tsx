@@ -10,13 +10,16 @@ type Props = React.PropsWithChildren<{
 }>;
 
 const MarkdownComponentSmoother: React.FC<Props> = ({ inProgress, children, component, componentProps }) => {
+
   return (
     <MarkdownTexts
       component={component}
       inProgress={inProgress}
       componentProps={{
         ...componentProps,
-        className: clsx(componentProps?.className, { [chatClassNames.markdownSmoothedPending]: inProgress })
+        className: clsx(componentProps?.className, {
+          [chatClassNames.markdownSmoothedPending]: inProgress,
+        })
       }}
     >
       {children}

@@ -32,6 +32,7 @@ import ThreadListItemMenuButton from '../leftContainer/ThreadListItemMenuButton'
 import { ChatMarkdownBlockRoot } from '../message/markdown/MessageMarkdownBlock';
 import { ChatMarkdownReasoningBlockRoot } from '../message/reasoning/MessageReasoningFull';
 import { Divider } from '@mui/material';
+import MessageMarkdownWrapper from '../message/markdown/MessageMarkdownWrapper';
 
 export type SlotValue<T = any> = React.JSXElementConstructor<T>;
 
@@ -84,6 +85,7 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
 
       messageRowInner: slots?.messageRowInner ?? ChatTextFieldRowInner,
       // MARKDOWN
+      markdownWrapper: slots?.markdownWrapper ?? MessageMarkdownWrapper,
       markdownMessageRoot: slots?.markdownMessageRoot ?? ChatMarkdownBlockRoot,
       markdownReasoningRoot: slots?.markdownReasoningRoot ?? ChatMarkdownReasoningBlockRoot,
       markdownA: slots?.markdownA ?? Link,
@@ -133,6 +135,10 @@ export const usePropsSlots = <DM extends Message, DD extends Thread<DM>>(
     markdownH6: { variant: 'h6' },
 
     ...slotProps,
+    markdownCodeWrapper: {
+      dir: 'ltr',
+      ...slotProps?.markdownCodeWrapper,
+    },
     firstMessage: {
       thread: slotProps?.firstMessage?.thread,
       text: slotProps?.firstMessage?.text ?? helloMessage,

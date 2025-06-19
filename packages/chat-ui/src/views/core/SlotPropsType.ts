@@ -98,6 +98,10 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
    * Custom markdown renderer for reasoning block
    */
   markdownReasoningRoot: BoxProps;
+    /**
+   * Render markdown wrapper
+   */
+  markdownWrapper: BoxProps;
   /**
    * Render links
    */
