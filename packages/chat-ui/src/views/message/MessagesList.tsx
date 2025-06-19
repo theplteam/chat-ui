@@ -27,7 +27,7 @@ const MessagesList: React.FC<Props> = ({ messages, thread, gap }) => {
           key={arrayPluckAndJoin(groupMessages, 'viewerUniqueKey', '-')}
           messages={groupMessages}
           gap={gap}
-          isLatestGroup={key === groupedMessages.length -1}
+          isLatestGroup={key === groupedMessages.length - 1}
           thread={thread}
         />
       ))}

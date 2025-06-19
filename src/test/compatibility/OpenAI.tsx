@@ -97,6 +97,14 @@ const App: React.FC = () => {
   const { onUserMessageSent, handleStopMessageStreaming } =
     useAssistantAnswerMock();
 
+  const initialThreadMessage = () => {
+    const message = {
+      text: helloMessage,
+      stream: false,
+    };
+    return message;
+  };
+
   return (
     <Box height="100dvh" width="100dvw">
       <ChatGptAdapter>
@@ -104,7 +112,7 @@ const App: React.FC = () => {
           initialThread={dd[0]}
           threads={dd}
           handleStopMessageStreaming={handleStopMessageStreaming}
-          helloMessage={helloMessage}
+          initialThreadMessage={initialThreadMessage}
           onUserMessageSent={onUserMessageSent}
         />
       </ChatGptAdapter>

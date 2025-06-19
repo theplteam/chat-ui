@@ -10,7 +10,7 @@ export type AttachmentType = 'file' | 'image' | 'video';
 export type Attachment = {
   type: AttachmentType,
   id: IdType,
-  url?: string,
+  url: string,
   file?: File,
   poster?: string,
 };

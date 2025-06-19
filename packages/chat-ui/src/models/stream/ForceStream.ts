@@ -1,3 +1,4 @@
+import { MessageModel } from '../../models/MessageModel';
 import { PromiseUtils } from '../../utils/PromiseUtils';
 import { arrayChunk } from '../../utils/arrayUtils/arrayChunk';
 import { randomInt } from '../../utils/numberUtils/randomInt';
@@ -16,7 +17,7 @@ export class ForceStream {
 
   constructor(
     private _text: string,
-    private model?: { text: string },
+    private model?: MessageModel,
     private onPushTextPart?: (text: string) => void,
   ) {}
 

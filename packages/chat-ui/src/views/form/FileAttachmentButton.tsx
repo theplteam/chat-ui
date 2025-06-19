@@ -84,7 +84,7 @@ const FileAttachmentButton: React.FC<Props> = ({ attachments, setAttachments, is
 
     const fileAttachments = files.map((f) => {
       const type = f.type.startsWith('video') ? 'video' : f.type.startsWith('image') ? 'image' : 'file';
-      const data: Omit<Attachment, 'id'> = {
+      const data: Omit<Attachment, 'id' | 'url'> = {
         type,
         file: f,
       };

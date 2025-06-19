@@ -180,6 +180,10 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   getConversationBlockHeightMin?: (calculatedHeight: number) => number;
   /**
+   * The function outputs the first message in the thread.
+   */
+  initialThreadMessage?: (threadId: IdType) => { text: string, stream: boolean } | undefined;
+  /**
    * If this function is present, the default snackbar will not be shown; instead, this function will be called.
    */
   onShowAlert?: onShowAlertType;
@@ -212,10 +216,6 @@ export type ChatUsersProps<DM extends Message, DD extends Thread<DM>> = Partial<
    * The ref object that allows ChatUI manipulation. Can be instantiated with `useChatContext`
    */
   apiRef: React.MutableRefObject<ApiRefType<DM, DD> | null>;
-  /**
-   * Show a welcome message at the beginning of the thread.
-   */
-  helloMessage?: string
 }> & RequiredProps<DD> & Partial<Omit<ChatPropsTypes<DM, DD>, 'slots' | 'coreSlots' | 'slotProps' | keyof RequiredProps<DD>>>;
 
 export const useChatProps = <DM extends Message, DD extends Thread<DM>>(userProps: ChatUsersProps<DM, DD>): ChatPropsTypes<DM, DD> => {
