@@ -1,5 +1,4 @@
 import React from 'react';
-import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import AttachmentModel from '../../../models/AttachmentModel';
 import { useObserverValue } from '../../hooks/useObserverValue';
@@ -12,7 +11,7 @@ import { useMobile } from '../../../ui/Responsive';
 import useHover from '../../../views/hooks/useHover';
 import { IdType } from '../../../types';
 import PreviewTooltip from './PreviewTooltip';
-import { materialDesignSysPalette } from '../../../utils/materialDesign/palette';
+import { useChatSlots } from '../../../views/core/ChatSlotsContext';
 
 type Props = {
   item: AttachmentModel;
@@ -20,10 +19,7 @@ type Props = {
   handleDelete: (id: IdType, url: string) => void;
 };
 
-const BoxStyled = styled(Box)(() => ({
-  position: 'relative',
-  height: 80,
-  borderRadius: 16,
+const TooltipStyled = styled(PreviewTooltip)(() => ({
   '& a': {
     height: 80,
     width: 80,
@@ -42,6 +38,8 @@ const BoxStyled = styled(Box)(() => ({
 
 const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
   const { url, id, name, type, isGallery } = item;
+  const { slots, slotProps } = useChatSlots();
+
   const progress = useObserverValue(item.progress);
   const error = useObserverValue(item.error);
   const poster = useObserverValue(item.poster);
@@ -53,15 +51,20 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
   const isVideo = type === 'video';
   const showInGallery = isGallery && !error;
 
+  const component = React.useMemo(() => ({
+    wrapper: error ? slots.attachmentPreviewError : slots.attachmentPreviewItem,
+    props: error ? slotProps.attachmentPreviewError : slotProps.attachmentPreviewItem
+  }), [error]);
+
   return (
-    <PreviewTooltip title={name}>
-      <BoxStyled
+    <TooltipStyled title={name}>
+      <component.wrapper
+        {...component.props}
         ref={setElement}
+        position='relative'
+        height={80}
+        borderRadius={4}
         width={showInGallery ? 80 : 200}
-        sx={{
-          backgroundColor: (theme) => error ? materialDesignSysPalette.error : theme.palette.grey[200],
-          color: (theme) => error ? theme.palette.common.white : 'inherit',
-        }}
       >
         {(!progress || progress < 100) ? <CircularLoadProgress progress={progress} /> : null}
         {showInGallery
@@ -74,8 +77,8 @@ const PreviewItem: React.FC<Props> = ({ item, galleryId, handleDelete }) => {
             />
           ) : <FileItem name={name} type={type} error={error} />}
         {(isMobile || isHover) ? <PreviewDeleteButton onClick={() => handleDelete(id, url)} /> : null}
-      </BoxStyled>
-    </PreviewTooltip>
+      </component.wrapper>
+    </TooltipStyled>
   );
 };
 

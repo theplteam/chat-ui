@@ -27,6 +27,14 @@ export type SlotPropsType<DM extends Message, DD extends Thread<DM>> = {
   sendMessageButton: IconButtonProps;
 
   messageRowInner: { thread: DD } & any;
+  /**
+   * Container for attachment preview item.
+   */
+  attachmentPreviewItem: BoxProps;
+  /**
+   * Container for attachment preview item with error.
+   */
+  attachmentPreviewError: BoxProps;
 
   // MESSAGE
   /**
