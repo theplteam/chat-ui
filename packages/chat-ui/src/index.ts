@@ -12,6 +12,7 @@ import { chatClassNames } from './views/core/chatClassNames';
 import { onShowAlertType } from './types/onShowAlertType';
 import { historyClassNames } from './views/core/history/historyClassNames';
 import MobileHistory from './views/leftContainer/MobileHistory';
+import { ToolType } from './types/ToolType';
 
 export * from './models';
 export * from './views/adapter';
@@ -37,4 +38,5 @@ export {
   historyClassNames,
   type onShowAlertType,
   ChatUsersProps as ChatProps,
+  type ToolType,
 };

@@ -22,7 +22,8 @@ const inputClasses = {
 
 const InputBaseStyled = styled(InputBase)(({ theme }) => ({
   flex: 1,
-  padding: theme.spacing(1),
+  padding: `${theme.spacing(0, 2)} !important`,
+  paddingTop: `${theme.spacing(1)} !important`,
   // если включить, то будет анимация увеличения размера, но глючит перенос на новую строку:
   //  верхняя строчка в textarea добавляется моментально и вылезает за пределы textarea, а затем transition её догоняет
   /*[`&:not(.${inputClasses.fullHeight})`]: {

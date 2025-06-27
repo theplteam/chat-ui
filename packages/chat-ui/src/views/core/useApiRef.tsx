@@ -5,6 +5,7 @@ import { IdType } from '../../types';
 import { ThreadMessages } from '../../models/ThreadMessages';
 import { ObservableReactValue } from '../../utils/observers';
 import { ThreadListenersMap } from '../thread/ThreadListenersMap';
+import { ToolType } from '../../types/ToolType';
 
 export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = {
   /**
@@ -35,7 +36,7 @@ export type ApiRefType<DM extends Message = any, DD extends Thread<DM> = any> = 
   /**
    * Send message to conversation
    */
-  sendUserMessage: (content: Message['content']) => Promise<boolean>;
+  sendUserMessage: (content: Message['content'], tool?: ToolType) => Promise<boolean>;
   /**
    * Triggered when another thread is opened.
    */

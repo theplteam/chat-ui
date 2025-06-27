@@ -17,6 +17,7 @@ import { MessageSentParams } from '../../models/MessageSentParams';
 import { FileAttachedParams } from '../../models/FileAttachedParams';
 import { onShowAlertType } from '../../types/onShowAlertType';
 import { IdType } from '../../types';
+import { ToolType } from '../../types/ToolType';
 
 type RequiredProps<DD extends Thread<any>> = {
   /**
@@ -137,10 +138,17 @@ export type ChatPropsTypes<DM extends Message, DD extends Thread<DM>> = {
    */
   enableReasoning?: boolean;
   /**
+   * Enable chat tools
+   */
+  enableTools?: boolean;
+  /**
+   * List of tools
+   */
+  toolsList?: ToolType[];
+  /**
    * Enable user's ability to add files in messages
    */
   enableFileAttachments?: boolean;
-
   /**
    * Prevent the user from deleting/adding files during message editing
    */
