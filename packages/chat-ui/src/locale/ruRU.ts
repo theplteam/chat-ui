@@ -48,5 +48,6 @@ export const ruRU: Localization = {
   messageFeedbackSubmitButton: 'Отправить',
   messageFeedbackLink: 'Узнать больше',
   messageFeedbackText: 'Открывается в новом окне о том, как ваш отзыв используется для улучшения Chat UI.',
-  reasonedFor: 'Думал {{time}}'
+  reasonedFor: 'Думал {{time}}',
+  innerRowExpand: 'Полный экран'
 };

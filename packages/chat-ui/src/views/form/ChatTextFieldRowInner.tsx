@@ -20,6 +20,7 @@ type Props = {
 };
 
 const StackStyled = styled(Stack)(({ theme }) => ({
+  position: 'relative',
   outline: `1px solid ${materialDesignSysPalette.outlineVariant}`,
   borderRadius: 24,
   padding: theme.spacing(1),
@@ -80,6 +81,7 @@ const ChatTextFieldRowInner: React.FC<Props> = ({ thread }) => {
           text={text}
           setText={setText}
           disabled={disabledTextField}
+          isTyping={isTyping}
           onSendMessage={onSendMessage}
         />
         <SendMessageButton

@@ -59,6 +59,7 @@ export type Localization = {
   textFieldPlaceholder: string;
   attachmentImageShot: string;
   attachmentImageGallery: string;
+  innerRowExpand: string;
 
   reasonedFor: string;
 };

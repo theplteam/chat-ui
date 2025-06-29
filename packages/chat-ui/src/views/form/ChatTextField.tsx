@@ -7,18 +7,17 @@ import { useTablet } from '../../ui/Responsive';
 import useEnterPress, { handleIgnoreEnterPress } from '../hooks/useEnterPress';
 import SimpleScrollbar from '../../ui/SimpleScrollbar';
 import { useLocalizationContext } from '../core/LocalizationContext';
+import TextFieldExpandButton from './TextFieldExpandButton';
 
 type Props = {
   text: string;
   setText: (value: string) => void;
   onSendMessage: () => void;
   disabled?: boolean;
+  isTyping?: boolean;
 };
 
-const inputClasses = {
-  ...inputBaseClasses,
-  fullHeight: 'PL-inputBase-fullHeight',
-} as const;
+const fullHeightClassname = 'PL-inputBase-fullHeight';
 
 const InputBaseStyled = styled(InputBase)(({ theme }) => ({
   flex: 1,
@@ -32,9 +31,10 @@ const InputBaseStyled = styled(InputBase)(({ theme }) => ({
   },*/
 }));
 
-const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled }) => {
+const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled, isTyping }) => {
   const inputRef = useElementRef<HTMLInputElement>();
   const [height, setHeight] = React.useState(0);
+  const [expand, setExpand] = React.useState(false);
   const locale = useLocalizationContext();
 
   const isTablet = useTablet();
@@ -50,45 +50,61 @@ const ChatTextField: React.FC<Props> = ({ text, setText, onSendMessage, disabled
 
   React.useEffect(() => {
     setHeight(parseInt(inputRef.current?.style.height ?? '0'));
-  })
+  });
 
-  const isFullHeight = height > 165;
+  React.useEffect(() => {
+    if (isTyping) setExpand(false);
+  }, [isTyping]);
+
+  const showExpandButton = height > 75;
+
+  const handleExpand = () => {
+    setExpand(!expand);
+    inputRef.current?.focus();
+  };
 
   return (
-    <SimpleScrollbar
-      style={{
-        maxHeight: 160,
-        width: '100%',
-        overflowX: 'auto',
-      }}
-    >
-      <InputBaseStyled
-        fullWidth
-        multiline
-        placeholder={locale.textFieldPlaceholder}
-        value={text}
-        className={clsx(
-          {
-            [inputClasses.fullHeight]: isFullHeight,
-          }
-        )}
-        inputRef={inputRef}
-        size="small"
-        sx={{
-          flex: 1,
-          p: 1,
-        }}
-        disabled={disabled}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setText(event.target.value);
-        }}
-        onKeyDown={!isTablet ? handleIgnoreEnterPress : undefined}
-        onKeyUp={isTablet
-          ? undefined
-          : onEnterPress}
-        {...inputProps}
+    <>
+      <TextFieldExpandButton
+        show={showExpandButton}
+        expand={expand}
+        onClick={handleExpand}
       />
-    </SimpleScrollbar>
+      <SimpleScrollbar
+        style={{
+          height: expand ? '80vh' : undefined,
+          maxHeight: expand ? '80vh' : 160,
+          width: '100%',
+          overflowX: 'auto',
+        }}
+      >
+        <InputBaseStyled
+          fullWidth
+          multiline
+          className={clsx({ [fullHeightClassname]: expand })}
+          placeholder={locale.textFieldPlaceholder}
+          value={text}
+          inputRef={inputRef}
+          size="small"
+          sx={{
+            flex: 1,
+            p: 1,
+            [`&& .${inputBaseClasses.input}`]: {
+              minHeight: expand ? '79vh' : 'auto',
+            },
+          }}
+          disabled={disabled}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setText(event.target.value);
+          }}
+          onKeyDown={!isTablet ? handleIgnoreEnterPress : undefined}
+          onKeyUp={isTablet
+            ? undefined
+            : onEnterPress}
+          {...inputProps}
+        />
+      </SimpleScrollbar>
+    </>
   );
 };
 
